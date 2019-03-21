@@ -15,8 +15,9 @@ edition = "2018"
 
 
 [dependencies]
-alga = "0.5.2"
+alga = "0.7.2"
 derive_builder = "0.5.0"
-nalgebra = "0.13.1"
+nalgebra = "0.16.13"
 num-traits = "0.1.40"
-amethyst = "0.10.0"
+#amethyst = "0.10.0"
+amethyst_core = "0.5.0"

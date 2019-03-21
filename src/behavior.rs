@@ -1,10 +1,9 @@
-use amethyst::ecs::{Component, DenseVecStorage, Entity};
+use amethyst_core::specs::{Component, DenseVecStorage, Entity};
 
-pub enum Behavior{
-    Flee(Entity)  
+pub enum Behavior {
+    Flee(Entity),
 }
 
-
-impl Component for Behavior{
+impl Component for Behavior {
     type Storage = DenseVecStorage<Self>;
 }
