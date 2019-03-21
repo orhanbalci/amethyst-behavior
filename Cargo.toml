@@ -1,0 +1,22 @@
+[package]
+authors = ["Orhan Balci <orhanbalci@gmail.com>"]
+name = "amethyst-behavior"
+version = "0.1.0"
+description = "Steering calculations for autonomous agents"
+documentation = "http://orhanbalci.github.io/amethyst-behavior"
+repository = "https://github.com/orhanbalci/amethyst-behavior.git"
+homepage = "https://github.com/orhanbalci"
+keywords = ["gamedev","ai", "behavior"]
+license = "MIT"
+exclude = [".travis.yml"]
+readme = "README.md"
+categories = ["game-engines"]
+edition = "2018"
+
+
+[dependencies]
+alga = "0.5.2"
+derive_builder = "0.5.0"
+nalgebra = "0.13.1"
+num-traits = "0.1.40"
+amethyst = "0.10.0"
