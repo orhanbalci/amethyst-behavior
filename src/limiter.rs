@@ -1,10 +1,9 @@
-use alga::general::Real;
 use amethyst_core::specs::{Component, DenseVecStorage};
 
-pub enum Limiter<T: Real> {
-    LinearAccelerationLimiter(T),
+pub enum Limiter {
+    LinearAccelerationLimiter(f32),
 }
 
-impl<T: Real> Component for Limiter<T> {
+impl Component for Limiter {
     type Storage = DenseVecStorage<Self>;
 }

@@ -63,8 +63,7 @@ impl<T: Real> SteeringAcceleration<T> {
     ///
     pub fn mul_add(&mut self, other: SteeringAcceleration<T>, scale: T) -> &mut Self {
         self.angular += other.angular * scale;
-        self.linear
-            .component_mul_assign(&Vector3::from_element(scale));
+        self.linear += other.linear.component_mul(&Vector3::from_element(scale));
         self
     }
 
