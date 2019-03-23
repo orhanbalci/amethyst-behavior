@@ -1,4 +1,4 @@
-use amethyst_core::specs::{Entities, Join, ReadStorage, System, WriteStorage};
+use amethyst_core::specs::{Entities, Join, ReadStorage, System};
 use amethyst_core::Transform;
 use nalgebra::Vector3;
 
