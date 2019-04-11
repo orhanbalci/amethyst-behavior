@@ -4,9 +4,9 @@ use nalgebra::{distance_squared, Point3, Vector3};
 
 use super::{Behavior, Limiter, SteeringAcceleration, Velocity};
 
-pub struct EvadeSystem;
+pub struct PursueSystem;
 
-impl<'s> System<'s> for EvadeSystem {
+impl<'s> System<'s> for PursueSystem {
     type SystemData = (
         ReadStorage<'s, Behavior>,
         ReadStorage<'s, Transform>,
@@ -18,7 +18,9 @@ impl<'s> System<'s> for EvadeSystem {
     fn run(&mut self, (behaviors, transforms, entities, limiters, velocities): Self::SystemData) {
         for (b, owner) in (&behaviors, &entities).join() {
             match b {
-                Behavior::Evade(target, max_prediction_time) => {
+                Behavior::Pursue(target, max_prediction_time) => {
+                    let mut sa: SteeringAcceleration<f32> = SteeringAcceleration::default();
+
                     let square_distance = distance_squared(
                         &Point3::from(
                             transforms.get(*target).cloned().unwrap().translation()
@@ -35,20 +37,19 @@ impl<'s> System<'s> for EvadeSystem {
                     };
 
                     let mut prediction_time = *max_prediction_time;
-
-                    if square_speed > 0.0 {
+                    if square_speed > 0.0f32 {
                         let square_prediction_time = square_distance / square_speed;
                         if square_prediction_time < max_prediction_time.powi(2) {
                             prediction_time = square_prediction_time.sqrt();
                         }
                     }
 
-                    let mut sa: SteeringAcceleration<f32> = SteeringAcceleration::default();
                     sa.linear = *transforms.get(*target).cloned().unwrap().translation();
                     sa.mul_add(
                         SteeringAcceleration::new(velocities.get(*target).unwrap().velocity, 0.0),
                         prediction_time,
                     );
+
                     sa.linear -= transforms.get(owner).cloned().unwrap().translation();
                     sa.linear = sa.linear.normalize();
 
@@ -56,10 +57,10 @@ impl<'s> System<'s> for EvadeSystem {
                         match limiter {
                             Limiter::LinearAccelerationLimiter(lin_limit) => sa
                                 .linear
-                                .component_mul_assign(&-Vector3::from_element(*lin_limit)),
+                                .component_mul_assign(&Vector3::from_element(*lin_limit)),
                         }
                     } else {
-                        sa.linear.component_mul_assign(&Vector3::from_element(-1.0))
+                        sa.linear.component_mul_assign(&Vector3::from_element(1.0))
                     }
                     sa.angular = 0.0;
                 }
